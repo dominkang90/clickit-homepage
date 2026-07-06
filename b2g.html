@@ -184,13 +184,13 @@ footer b{color:#b9c6bd}
 <header id="hero">
   <div class="wrap">
     <span class="doc reveal in">지자체 · 공공기관 정책 제안</span>
-    <h1 class="reveal in">돌봄과 에너지 복지를,<br><em>조명 하나</em>로 연결합니다.</h1>
-    <p class="tag reveal in">취약계층 주거 안전 조명 개선 서비스 — 노인 본인이나 요양보호사가 <b>30초 만에 딸깍</b> 교체하는 자석식 LED 조명 모듈 클리킷으로, 낙상·감전 예방과 에너지 효율을 동시에 실현하는 돌봄 지원 모델입니다.</p>
+    <h1 class="reveal in" data-edit="b2g.h1">돌봄과 에너지 복지를,<br><em>조명 하나</em>로 연결합니다.</h1>
+    <p class="tag reveal in" data-edit="b2g.tag">취약계층 주거 안전 조명 개선 서비스 — 노인 본인이나 요양보호사가 <b>30초 만에 딸깍</b> 교체하는 자석식 LED 조명 모듈 클리킷으로, 낙상·감전 예방과 에너지 효율을 동시에 실현하는 돌봄 지원 모델입니다.</p>
     <div class="cta-row reveal in">
       <a class="btn primary" href="#calc">우리 지자체 도입 효과 계산하기</a>
       <a class="btn ghost" href="mailto:safeon.lab@gmail.com">제안서 요청하기</a>
     </div>
-    <p class="quote reveal in">"본 제안은 '제품 판매'가 아닌, 지역이 전국 표준을 먼저 선언하는 정책 실험입니다."</p>
+    <p class="quote reveal in" data-edit="b2g.quote">"본 제안은 '제품 판매'가 아닌, 지역이 전국 표준을 먼저 선언하는 정책 실험입니다."</p>
   </div>
 </header>
 
@@ -308,9 +308,9 @@ footer b{color:#b9c6bd}
 <!-- PILOT CTA -->
 <section id="pilot">
   <p class="kicker reveal" style="color:var(--orange)">Pilot Proposal</p>
-  <h2 class="reveal">1,000세대 시범사업을 제안합니다.</h2>
-  <p class="lead reveal">취약계층 1,000세대 대상 돌봄 연계 조명 개선 시범사업 — 상세 제안서와 시연을 준비해 두었습니다.</p>
-  <p class="quote reveal">"먼저 선언하는 지역이, 전국 표준이 됩니다."</p>
+  <h2 class="reveal" data-edit="b2g.pilotH2">1,000세대 시범사업을 제안합니다.</h2>
+  <p class="lead reveal" data-edit="b2g.pilotLead">취약계층 1,000세대 대상 돌봄 연계 조명 개선 시범사업 — 상세 제안서와 시연을 준비해 두었습니다.</p>
+  <p class="quote reveal" data-edit="b2g.pilotQuote">"먼저 선언하는 지역이, 전국 표준이 됩니다."</p>
   <a class="btn primary reveal" href="mailto:safeon.lab@gmail.com?subject=[CLICKIT] B2G 시범사업 문의">시범사업 문의 — safeon.lab@gmail.com</a>
 </section>
 
@@ -320,6 +320,23 @@ footer b{color:#b9c6bd}
 </footer>
 
 <script>
+// 관리자 설정(content.json) 적용 — 실패하면 기본 내용 그대로
+const FONTS={
+  pretendard:{css:'',fam:"'Pretendard Variable',Pretendard,sans-serif"},
+  noto:{css:'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap',fam:"'Noto Sans KR',sans-serif"},
+  gowun:{css:'https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap',fam:"'Gowun Dodum',sans-serif"},
+  ibm:{css:'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap',fam:"'IBM Plex Sans KR',sans-serif"}
+};
+fetch('content.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(c=>{
+  if(!c)return;
+  if(c.text)document.querySelectorAll('[data-edit]').forEach(el=>{const v=c.text[el.dataset.edit];if(v!=null)el.innerHTML=v;});
+  const f=FONTS[c.font];
+  if(f&&c.font!=='pretendard'){
+    if(f.css){const l=document.createElement('link');l.rel='stylesheet';l.href=f.css;document.head.appendChild(l);}
+    ['--serif','--sans','--mono'].forEach(v=>document.documentElement.style.setProperty(v,f.fam));
+  }
+}).catch(()=>{});
+
 // scroll reveal
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.15});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));

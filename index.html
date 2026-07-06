@@ -258,6 +258,11 @@ video{width:100%;border-radius:24px;border:1px solid var(--line);margin-top:70px
 footer{background:#070a0f;color:#5b6577;font-size:13px;padding:30px 6vw;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;border-top:1px solid var(--line)}
 footer b{color:var(--mut)}
 
+/* 관리자 설정으로 효과 끄기 (admin.html → content.json) */
+.no-grain #grain{display:none}
+.no-marq #marq{display:none}
+.no-reveal .reveal{opacity:1!important;transform:none!important}
+
 /* 움직임 줄이기 설정 존중 */
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
@@ -294,8 +299,8 @@ footer b{color:var(--mut)}
     <div class="shade"></div>
     <div class="cord"></div>
   </div>
-  <h1>딸깍<span class="dot2">.</span></h1>
-  <p class="sub">조명 교체의 모든 과정을, 소리 하나로 줄였습니다.<br>천장 위의 맥세이프 — <b>클리킷</b></p>
+  <h1 data-edit="hero.h1">딸깍<span class="dot2">.</span></h1>
+  <p class="sub" data-edit="hero.sub">조명 교체의 모든 과정을, 소리 하나로 줄였습니다.<br>천장 위의 맥세이프 — <b>클리킷</b></p>
   <p class="hint">CLICK THE LIGHT ▲</p>
   <div class="cta-row">
     <a class="btn amber" href="#solution">30초의 마법 보기</a>
@@ -313,13 +318,13 @@ footer b{color:var(--mut)}
 <section id="problem">
   <div class="wrap">
     <p class="kicker reveal">01 — PROBLEM</p>
-    <h2 class="reveal">조명 하나 바꾸려고<br><span class="strike">기사님을 불러야 했던</span><br>모든 날들에게.</h2>
-    <p class="lead reveal">전등은 소모품인데, 교체는 공사였습니다. 전선을 만지고, 사다리에 오르고, 출장비를 내고 — 클리킷이 지우려는 건 조명이 아니라 <b>이 과정 전부</b>입니다.</p>
+    <h2 class="reveal" data-edit="problem.h2">조명 하나 바꾸려고<br><span class="strike">기사님을 불러야 했던</span><br>모든 날들에게.</h2>
+    <p class="lead reveal" data-edit="problem.lead">전등은 소모품인데, 교체는 공사였습니다. 전선을 만지고, 사다리에 오르고, 출장비를 내고 — 클리킷이 지우려는 건 조명이 아니라 <b>이 과정 전부</b>입니다.</p>
     <div class="painGrid">
-      <div class="pain reveal"><div class="no">RISK 01</div><h3>감전 위험</h3><p>천장 전선을 직접 만지는 순간, 감전·합선 사고 가능성에 그대로 노출됩니다.</p></div>
-      <div class="pain reveal"><div class="no">RISK 02</div><h3>낙상 위험</h3><p>사다리 위에서 무거운 조명을 든 채 버티는 작업 — 가정 내 사고의 단골 원인입니다.</p></div>
-      <div class="pain reveal"><div class="no">COST 01</div><h3>출장 비용</h3><p>조명 값보다 비싼 출장비와 인건비. 등 하나 바꾸는 데 5만~8만원이 듭니다.</p></div>
-      <div class="pain reveal"><div class="no">COST 02</div><h3>전문 지식</h3><p>결선, 규격, 부하 — 소비자가 알 필요 없어야 할 지식이 진입장벽이 됩니다.</p></div>
+      <div class="pain reveal"><div class="no">RISK 01</div><h3 data-edit="pain1t">감전 위험</h3><p data-edit="pain1p">천장 전선을 직접 만지는 순간, 감전·합선 사고 가능성에 그대로 노출됩니다.</p></div>
+      <div class="pain reveal"><div class="no">RISK 02</div><h3 data-edit="pain2t">낙상 위험</h3><p data-edit="pain2p">사다리 위에서 무거운 조명을 든 채 버티는 작업 — 가정 내 사고의 단골 원인입니다.</p></div>
+      <div class="pain reveal"><div class="no">COST 01</div><h3 data-edit="pain3t">출장 비용</h3><p data-edit="pain3p">조명 값보다 비싼 출장비와 인건비. 등 하나 바꾸는 데 5만~8만원이 듭니다.</p></div>
+      <div class="pain reveal"><div class="no">COST 02</div><h3 data-edit="pain4t">전문 지식</h3><p data-edit="pain4p">결선, 규격, 부하 — 소비자가 알 필요 없어야 할 지식이 진입장벽이 됩니다.</p></div>
     </div>
   </div>
 </section>
@@ -328,8 +333,8 @@ footer b{color:var(--mut)}
 <section id="solution">
   <div class="wrap">
     <p class="kicker reveal">02 — SOLUTION</p>
-    <h2 class="reveal">부착. 연결. 잠금.<br><em>배우지 않아도 되는</em> 기술.</h2>
-    <p class="lead reveal">천장에 한 번 다는 <b>스마트 플레이트</b>, 조명에 붙는 <b>커넥터</b>. 이 두 조각이 만나는 순간을 아래로 스크롤하며 지켜보세요.</p>
+    <h2 class="reveal" data-edit="solution.h2">부착. 연결. 잠금.<br><em>배우지 않아도 되는</em> 기술.</h2>
+    <p class="lead reveal" data-edit="solution.lead">천장에 한 번 다는 <b>스마트 플레이트</b>, 조명에 붙는 <b>커넥터</b>. 이 두 조각이 만나는 순간을 아래로 스크롤하며 지켜보세요.</p>
     <div class="stage">
       <div class="artWrap reveal">
         <div class="stepArt s1" id="stepArt">
@@ -344,20 +349,20 @@ footer b{color:var(--mut)}
       <div class="stepList">
         <div class="step on" data-s="1">
           <p class="num">STEP 1 — ATTACH</p>
-          <h3>플레이트는 딱 한 번</h3>
-          <p>기존 조명 자리에 스마트 플레이트를 한 번만 설치합니다. 기존 배선을 그대로 사용하고, 이후로는 어떤 조명이든 이 자리에서 갈아 끼웁니다.</p>
+          <h3 data-edit="step1t">플레이트는 딱 한 번</h3>
+          <p data-edit="step1p">기존 조명 자리에 스마트 플레이트를 한 번만 설치합니다. 기존 배선을 그대로 사용하고, 이후로는 어떤 조명이든 이 자리에서 갈아 끼웁니다.</p>
           <div class="chips"><span class="chip">최초 1회 설치</span><span class="chip">기존 배선 그대로</span><span class="chip">중앙 보수구 Ø40</span></div>
         </div>
         <div class="step" data-s="2">
           <p class="num">STEP 2 — CONNECT</p>
-          <h3>자석이 자리를 찾아줍니다</h3>
-          <p>조명을 천장 가까이 올리면 자석이 정확한 위치로 끌어당깁니다. 어두운 천장을 더듬으며 나사 구멍을 맞추던 시간은 여기서 사라집니다.</p>
+          <h3 data-edit="step2t">자석이 자리를 찾아줍니다</h3>
+          <p data-edit="step2p">조명을 천장 가까이 올리면 자석이 정확한 위치로 끌어당깁니다. 어두운 천장을 더듬으며 나사 구멍을 맞추던 시간은 여기서 사라집니다.</p>
           <div class="chips"><span class="chip">자석 위치 가이드</span><span class="chip">정렬 자동 보정</span><span class="chip">한 손 작업</span></div>
         </div>
         <div class="step" data-s="3">
           <p class="num">STEP 3 — LOCK</p>
-          <h3>살짝 돌리면, 딸깍</h3>
-          <p>기계식 구조가 잠기며 하중을 지지하고, 동시에 안전 접점이 붙으며 전기가 흐릅니다. 그 소리가 곧 "설치 완료" 신호입니다.</p>
+          <h3 data-edit="step3t">살짝 돌리면, 딸깍</h3>
+          <p data-edit="step3p">기계식 구조가 잠기며 하중을 지지하고, 동시에 안전 접점이 붙으며 전기가 흐릅니다. 그 소리가 곧 "설치 완료" 신호입니다.</p>
           <div class="chips"><span class="chip">회전 잠금 구조</span><span class="chip">자동 통전</span><span class="chip">감전 위험 ZERO</span></div>
         </div>
       </div>
@@ -368,10 +373,10 @@ footer b{color:var(--mut)}
 <!-- STATS -->
 <section id="stats">
   <div class="statRow">
-    <div class="stat reveal"><div class="n"><span data-count="30">0</span><small>초</small></div><div class="l">조명 교체에 걸리는 시간</div></div>
-    <div class="stat reveal"><div class="n"><span data-count="0">0</span><small>회</small></div><div class="l">전선을 직접 만지는 횟수</div></div>
-    <div class="stat reveal"><div class="n"><span data-count="0">0</span><small>원</small></div><div class="l">교체 시 시공 인건비</div></div>
-    <div class="stat reveal"><div class="n"><span data-count="1600">0</span><small>건+</small></div><div class="l">대표가 직접 뛴 조명·전기 현장</div></div>
+    <div class="stat reveal"><div class="n"><span data-count="30">0</span><small>초</small></div><div class="l" data-edit="stat1l">조명 교체에 걸리는 시간</div></div>
+    <div class="stat reveal"><div class="n"><span data-count="0">0</span><small>회</small></div><div class="l" data-edit="stat2l">전선을 직접 만지는 횟수</div></div>
+    <div class="stat reveal"><div class="n"><span data-count="0">0</span><small>원</small></div><div class="l" data-edit="stat3l">교체 시 시공 인건비</div></div>
+    <div class="stat reveal"><div class="n"><span data-count="1600">0</span><small>건+</small></div><div class="l" data-edit="stat4l">대표가 직접 뛴 조명·전기 현장</div></div>
   </div>
 </section>
 
@@ -379,8 +384,8 @@ footer b{color:var(--mut)}
 <section id="product">
   <div class="wrap">
     <p class="kicker reveal">03 — PRODUCT</p>
-    <h2 class="reveal">자석은 <span class="bl">안내</span>만,<br>하중은 구조가, 전기는 접점이.</h2>
-    <p class="lead reveal">자석은 위치를 잡아주는 가이드일 뿐 — 무게는 기계식 잠금이, 전기는 자석 바깥의 안전 접점이 책임집니다. 역할을 셋으로 쪼갠 <b>3중 안전 설계</b>입니다.</p>
+    <h2 class="reveal" data-edit="product.h2">자석은 <span class="bl">안내</span>만,<br>하중은 구조가, 전기는 접점이.</h2>
+    <p class="lead reveal" data-edit="product.lead">자석은 위치를 잡아주는 가이드일 뿐 — 무게는 기계식 잠금이, 전기는 자석 바깥의 안전 접점이 책임집니다. 역할을 셋으로 쪼갠 <b>3중 안전 설계</b>입니다.</p>
     <div class="prodGrid">
       <figure id="tilt" class="reveal"><img src="assets/product-render.png" alt="클리킷 스마트 플레이트와 조명 결합 렌더링" width="1024" height="1024"></figure>
       <ul class="specList reveal">
@@ -400,7 +405,7 @@ footer b{color:var(--mut)}
 <section id="tech">
   <div class="wrap">
     <p class="kicker reveal">04 — TECHNOLOGY · IP</p>
-    <h2 class="reveal">아이디어가 아니라,<br><em>출원된 기술</em>입니다.</h2>
+    <h2 class="reveal" data-edit="tech.h2">아이디어가 아니라,<br><em>출원된 기술</em>입니다.</h2>
     <div class="techGrid">
       <div class="techCard reveal">
         <h3>특허 출원 완료</h3>
@@ -427,11 +432,11 @@ footer b{color:var(--mut)}
 <section id="story">
   <div class="wrap">
     <p class="kicker reveal">05 — STORY</p>
-    <h2 class="reveal">1,600번의 현장이 만든<br>한 번의 <em>딸깍</em>.</h2>
-    <p class="lead reveal">조명·전기 현장 1,600건을 직접 뛴 에너지공학 전공 대표가, 매일 마주친 불편함을 스케치 한 장에서 제품까지 밀어붙였습니다.</p>
+    <h2 class="reveal" data-edit="story.h2">1,600번의 현장이 만든<br>한 번의 <em>딸깍</em>.</h2>
+    <p class="lead reveal" data-edit="story.lead">조명·전기 현장 1,600건을 직접 뛴 에너지공학 전공 대표가, 매일 마주친 불편함을 스케치 한 장에서 제품까지 밀어붙였습니다.</p>
     <div class="storyGrid">
-      <figure class="polar reveal"><img src="assets/product-2.png" alt="클리킷 초기 손스케치 도안" loading="lazy" width="2388" height="1668"><figcaption>fig.01 — 첫 스케치. 자석 가이드 구조의 시작.</figcaption></figure>
-      <figure class="polar reveal"><img src="assets/product-3.png" alt="클리킷 설계 도면과 제품 렌더링" loading="lazy" width="1375" height="858"><figcaption>fig.02 — 도면과 렌더링. 스케치가 규격이 되기까지.</figcaption></figure>
+      <figure class="polar reveal"><img src="assets/product-2.png" alt="클리킷 초기 손스케치 도안" loading="lazy" width="2388" height="1668"><figcaption data-edit="fig1">fig.01 — 첫 스케치. 자석 가이드 구조의 시작.</figcaption></figure>
+      <figure class="polar reveal"><img src="assets/product-3.png" alt="클리킷 설계 도면과 제품 렌더링" loading="lazy" width="1375" height="858"><figcaption data-edit="fig2">fig.02 — 도면과 렌더링. 스케치가 규격이 되기까지.</figcaption></figure>
     </div>
   </div>
 </section>
@@ -454,8 +459,8 @@ footer b{color:var(--mut)}
   <div class="wrap">
     <div style="max-width:640px">
       <p class="kicker reveal">FOR GOVERNMENT · ESG</p>
-      <h2 class="reveal" style="font-size:clamp(26px,3.6vw,42px)">지자체·공공기관이신가요?</h2>
-      <p class="lead reveal">돌봄 × 에너지 복지 — 취약계층 주거 안전 조명 개선 사업 제안서와 <b>도입 효과 계산기</b>를 준비했습니다.</p>
+      <h2 class="reveal" style="font-size:clamp(26px,3.6vw,42px)" data-edit="b2gband.h2">지자체·공공기관이신가요?</h2>
+      <p class="lead reveal" data-edit="b2gband.lead">돌봄 × 에너지 복지 — 취약계층 주거 안전 조명 개선 사업 제안서와 <b>도입 효과 계산기</b>를 준비했습니다.</p>
     </div>
     <a class="btn reveal" href="b2g.html">B2G·ESG 제안 보기 →</a>
   </div>
@@ -465,9 +470,9 @@ footer b{color:var(--mut)}
 <section id="contact">
   <div class="bulb reveal"></div>
   <p class="kicker reveal" style="justify-content:center">07 — CONTACT</p>
-  <h2 class="reveal">다음 딸깍은,<br><em>당신의 천장</em>에서.</h2>
-  <p class="lead reveal">납품 · 협업 · 투자 — 어떤 이야기든 환영합니다. 딸깍, 하고 답장 드릴게요.</p>
-  <a class="btn amber reveal" href="mailto:safeon.lab@gmail.com">이메일 보내기 — safeon.lab@gmail.com</a>
+  <h2 class="reveal" data-edit="contact.h2">다음 딸깍은,<br><em>당신의 천장</em>에서.</h2>
+  <p class="lead reveal" data-edit="contact.lead">납품 · 협업 · 투자 — 어떤 이야기든 환영합니다. 딸깍, 하고 답장 드릴게요.</p>
+  <a class="btn amber reveal" id="mailBtn" href="mailto:safeon.lab@gmail.com">이메일 보내기 — safeon.lab@gmail.com</a>
 </section>
 
 <footer>
@@ -476,13 +481,42 @@ footer b{color:var(--mut)}
 </footer>
 
 <script>
+// 관리자 설정(content.json) 적용 — 실패하면 기본 내용 그대로
+const FONTS={
+  pretendard:{css:'',fam:"'Pretendard Variable',Pretendard,sans-serif"},
+  noto:{css:'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap',fam:"'Noto Sans KR',sans-serif"},
+  gowun:{css:'https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap',fam:"'Gowun Dodum',sans-serif"},
+  ibm:{css:'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap',fam:"'IBM Plex Sans KR',sans-serif"}
+};
+fetch('content.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(c=>{
+  if(!c)return;window.__cfg=c;
+  if(c.text){
+    document.querySelectorAll('[data-edit]').forEach(el=>{const v=c.text[el.dataset.edit];if(v!=null)el.innerHTML=v;});
+    if(c.text['contact.email']){const a=document.getElementById('mailBtn');
+      a.href='mailto:'+c.text['contact.email'];a.textContent='이메일 보내기 — '+c.text['contact.email'];}
+  }
+  if(c.colors)for(const k in c.colors)document.documentElement.style.setProperty('--'+k,c.colors[k]);
+  const f=FONTS[c.font];
+  if(f&&c.font!=='pretendard'){
+    if(f.css){const l=document.createElement('link');l.rel='stylesheet';l.href=f.css;document.head.appendChild(l);}
+    ['--disp','--sans','--mono'].forEach(v=>document.documentElement.style.setProperty(v,f.fam));
+  }
+  const e=c.effects||{},H=document.documentElement.classList;
+  if(e.grain===false)H.add('no-grain');
+  if(e.marquee===false)H.add('no-marq');
+  if(e.reveal===false)H.add('no-reveal');
+}).catch(()=>{});
+
 // hero light switch
 const hero=document.getElementById('hero'),lamp=document.getElementById('lamp'),nav=document.getElementById('nav');
 let touched=false; // 사용자가 직접 껐다면 자동 점등이 다시 켜지 않도록
 function setLamp(on){hero.classList.toggle('lit',on);lamp.setAttribute('aria-pressed',on);}
 lamp.addEventListener('click',()=>{touched=true;setLamp(!hero.classList.contains('lit'));});
 lamp.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();lamp.click();}});
-setTimeout(()=>{if(!touched&&!hero.classList.contains('lit'))setLamp(true);},2800); // 기다리는 사용자를 위한 자동 점등
+setTimeout(()=>{
+  if(window.__cfg&&window.__cfg.effects&&window.__cfg.effects.autoLight===false)return; // 관리자가 끈 경우
+  if(!touched&&!hero.classList.contains('lit'))setLamp(true);
+},2800); // 기다리는 사용자를 위한 자동 점등
 
 // mobile menu
 const menuBtn=document.getElementById('menuBtn'),navList=document.querySelector('nav ul');
