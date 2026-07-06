@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>CLICKIT 3D 시뮬레이션 | (주)세이프온</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+:root{--bg:#0e1117;--ink:#e9edf3;--mut:#8b94a3;--ac:#58b0ff;--amber:#ffc861;--grn:#4ade80;--line:rgba(255,255,255,.1)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:'Pretendard Variable',Pretendard,-apple-system,system-ui,sans-serif}
+#c{position:fixed;inset:0;display:block;touch-action:none}
+#hd{position:fixed;top:14px;left:50%;transform:translateX(-50%);text-align:center;pointer-events:none;z-index:5;width:max-content;max-width:94vw}
+#hd h1{margin:0;font:700 19px/1 'Pretendard Variable',Pretendard,sans-serif;letter-spacing:.06em}
+#hd h1 b{color:var(--ac)}
+#hd h1 span{font:500 11px 'Pretendard Variable',Pretendard,sans-serif;color:var(--mut);margin-left:8px;letter-spacing:0}
+#chips{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.chip{font:500 10px/1 'Pretendard Variable',Pretendard,sans-serif;color:#cfe3f8;background:rgba(88,176,255,.10);border:1px solid rgba(88,176,255,.28);padding:5px 8px;border-radius:999px;letter-spacing:.04em}
+#tip{position:fixed;z-index:8;pointer-events:none;display:none;font:500 11px/1.4 'Pretendard Variable',Pretendard,sans-serif;color:#eaf1fa;background:rgba(16,21,30,.92);border:1px solid rgba(88,176,255,.45);padding:6px 10px;border-radius:9px;max-width:220px;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+#gauge{position:fixed;left:50%;transform:translateX(-50%);bottom:172px;z-index:5;pointer-events:none;width:min(300px,80vw)}
+#gtrack{position:relative;height:9px;border-radius:99px;background:#1b212d;border:1px solid var(--line);overflow:hidden}
+.seg{position:absolute;top:0;bottom:0}
+.s1{left:0;width:20%;background:#39414f}
+.s2{left:20%;width:66.7%;background:#2b5a8c}
+.s3{left:86.7%;width:13.3%;background:#9c6c22}
+#gE{position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--grn)}
+#needle{position:absolute;top:-2px;bottom:-2px;width:2.5px;background:#fff;border-radius:2px;box-shadow:0 0 6px rgba(255,255,255,.8)}
+#gl{display:flex;justify-content:space-between;margin-top:4px;font:500 8.5px 'Pretendard Variable',Pretendard,sans-serif;color:var(--mut)}
+#gl em{font-style:normal}
+#gl .e{color:var(--grn)} #gl .p{color:var(--amber)}
+#status{position:fixed;left:50%;transform:translateX(-50%);bottom:122px;max-width:92vw;z-index:5;pointer-events:none;text-align:center;font-size:13px;color:#dfe6ef;background:rgba(14,17,23,.74);border:1px solid var(--line);backdrop-filter:blur(8px);padding:9px 14px;border-radius:12px}
+#status b{color:var(--amber)} #status g{color:var(--grn);font-weight:700}
+#ctrl{position:fixed;left:0;right:0;bottom:0;z-index:6;padding:10px 12px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(14,17,23,0),rgba(14,17,23,.93) 32%)}
+.row{display:flex;gap:7px;justify-content:center;flex-wrap:wrap}
+.row+.row{margin-top:8px}
+button{font:500 12.5px/1 'Pretendard Variable',Pretendard,sans-serif;color:var(--ink);background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:999px;padding:10px 13px;cursor:pointer;transition:.18s}
+button:active{transform:scale(.96)}
+button.on{background:var(--ac);border-color:var(--ac);color:#0b1320;font-weight:700}
+button.tg.on{background:rgba(88,176,255,.16);color:var(--ac);border-color:rgba(88,176,255,.5)}
+button:disabled{opacity:.35}
+#click{position:fixed;left:50%;top:34%;transform:translate(-50%,-50%) scale(.6);z-index:7;font:700 25px 'Pretendard Variable',Pretendard,sans-serif;color:var(--amber);opacity:0;pointer-events:none;text-shadow:0 0 20px rgba(255,200,97,.65)}
+#click.go{animation:pop 1.2s ease forwards}
+@keyframes pop{0%{opacity:0;transform:translate(-50%,-50%) scale(.6)}16%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}30%{transform:translate(-50%,-50%) scale(1)}72%{opacity:1}100%{opacity:0;transform:translate(-50%,-66%) scale(1)}}
+@media(max-width:480px){#hd h1{font-size:15.5px}.chip{font-size:9px}button{padding:9px 10px;font-size:11.5px}#status{bottom:128px;font-size:11.5px}#gauge{bottom:178px}}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hd">
+  <h1>CLICK<b>IT</b><span>3D 결합 시뮬레이션 · 사각/원형</span></h1>
+  <div id="chips">
+    <span class="chip">중앙 보수구 Ø40</span><span class="chip">접점 = 자석 바깥</span><span class="chip">가이드 ▼→●</span><span class="chip">호버/탭 = 명칭</span>
+  </div>
+</div>
+<div id="tip"></div>
+<div id="gauge">
+  <div id="gtrack"><span class="seg s1"></span><span class="seg s2"></span><span class="seg s3"></span><i id="gE"></i><div id="needle"></div></div>
+  <div id="gl"><em>0° 진입</em><em>6° 낙하불가</em><em class="e">15° 접지E</em><em class="p">26–30° 통전</em></div>
+</div>
+<div id="status"></div>
+<div id="click">착 — 전원 ON</div>
+<div id="ctrl">
+  <div class="row" id="steps"></div>
+  <div class="row">
+    <button id="bAuto" class="tg on">⏸ 자동 재생</button>
+    <button id="bShape" class="tg">⚪ 원형으로</button>
+    <button id="bExp" class="tg">분해도</button>
+    <button id="bSec" class="tg">단면</button>
+    <button id="bXr" class="tg">투시·전선</button>
+  </div>
+</div>
+<script>
+// 3D를 못 띄우는 환경(외부망 차단·WebGL 미지원)에서 검은 화면 대신 안내 문구
+function fail(msg){const s=document.getElementById('status');s.textContent=msg;s.style.color='#ffb0a0';}
+if(!window.THREE){fail('3D 라이브러리를 불러오지 못했어요. 인터넷 연결(외부 스크립트 허용)을 확인한 뒤 새로고침해 주세요.');throw new Error('THREE missing');}
+const D2R=Math.PI/180;
+const canvas=document.getElementById('c');
+let renderer;
+try{renderer=new THREE.WebGLRenderer({canvas,antialias:true});}
+catch(e){fail('이 기기·브라우저에서는 3D(WebGL)를 사용할 수 없어요. 다른 브라우저나 PC에서 열어 주세요.');throw e;}
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0x0e1117);
+scene.fog=new THREE.Fog(0x0e1117,1150,2500);
+const camera=new THREE.PerspectiveCamera(42,1,1,5000);
+const TGT=new THREE.Vector3(0,66,0);
+let th=.7,ph=1.78,dist=740;
+function updCam(){const sp=Math.sin(ph);camera.position.set(TGT.x+dist*sp*Math.sin(th),TGT.y+dist*Math.cos(ph),TGT.z+dist*sp*Math.cos(th));camera.lookAt(TGT);}
+function rs(){renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();}
+addEventListener('resize',rs);rs();
+
+scene.add(new THREE.HemisphereLight(0xcfe2ff,0x10141c,.55));
+const dl=new THREE.DirectionalLight(0xffffff,.85);dl.position.set(180,90,260);scene.add(dl);
+const dl2=new THREE.DirectionalLight(0x6f87ff,.25);dl2.position.set(-240,-90,-180);scene.add(dl2);
+const ledLight=new THREE.PointLight(0xffd9a0,0,1100,2);scene.add(ledLight);
+const grid=new THREE.GridHelper(1700,32,0x2c3850,0x18202e);grid.position.y=-140;scene.add(grid);
+
+const DS=THREE.DoubleSide;
+function M(c,r,m){return new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m,side:DS});}
+const mWhite=M(0xeff1f4,.5,.06), mWhite2=M(0xdde1e7,.55,.06), mDark=M(0x262c36,.75,.25),
+mMag=M(0x97a1ae,.32,.92), mGold=M(0xd8a843,.3,.95), mSteel=M(0xc0c9d4,.28,.95),
+mFix=M(0xf3f4f6,.42,.06), mCeil=M(0x454d5c,.92,.05), mTerm=M(0x9aa4b2,.55,.25),
+mLever=M(0xe07b39,.55,.2), mAlu=M(0xc8cdd3,.35,.75), mJbox=M(0x6b7480,.7,.2);
+mGold.emissive.set(0xff9a2e);mGold.emissiveIntensity=0;
+const mE=M(0xd8b04a,.3,.95);mE.emissive.set(0x44ff88);mE.emissiveIntensity=0;
+const mDiff=new THREE.MeshStandardMaterial({color:0xfdf4dd,roughness:.85,metalness:0,emissive:0xffdf9e,emissiveIntensity:0,side:DS});
+const mLed=new THREE.MeshStandardMaterial({color:0xfff3c4,roughness:.6,metalness:0,emissive:0xffe9a0,emissiveIntensity:0,side:DS});
+const mGuide=M(0x58b0ff,.45,.3);mGuide.emissive.set(0x58b0ff);mGuide.emissiveIntensity=.3;
+const mStart=M(0xffc861,.45,.3);mStart.emissive.set(0xffc861);mStart.emissiveIntensity=.35;
+const mLock=M(0x4ade80,.45,.3);mLock.emissive.set(0x4ade80);mLock.emissiveIntensity=.35;
+function W(c){const m=M(c,.5,.15);m.emissive.set(c);m.emissiveIntensity=0;return m;}
+const mWL=W(0x9a5a26), mWN=W(0x2f6fc4), mWE=W(0x3da55a), mWW=W(0xc9ccd2);
+
+function cyl(r,h,mat,seg){return new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,seg||80),mat);}
+function box(a,b,c,mat){return new THREE.Mesh(new THREE.BoxGeometry(a,b,c),mat);}
+function sector(rIn,rOut,w0,w1,h,mat){
+  const a0=-w1*D2R,a1=-w0*D2R,s=new THREE.Shape();
+  s.absarc(0,0,rOut,a0,a1,false);s.absarc(0,0,rIn,a1,a0,true);
+  const m=new THREE.Mesh(new THREE.ExtrudeGeometry(s,{depth:h,bevelEnabled:false,curveSegments:30}),mat);
+  m.rotation.x=-Math.PI/2;return m;
+}
+function ring(rIn,rOut,h,mat){ // 360° 링 = 반원 2개 (전각 absarc 회피)
+  const g=new THREE.Group();
+  g.add(sector(rIn,rOut,0,180,h,mat));g.add(sector(rIn,rOut,180,360,h,mat));
+  return g;
+}
+function N(o,n){o.traverse(x=>{if(x.isMesh&&!x.userData.n)x.userData.n=n;});return o;}
+function nm(mesh,n){mesh.userData.n=n;return mesh;}
+const SPH=new THREE.SphereGeometry(1.15,10,8);
+const dotP=new THREE.MeshBasicMaterial({color:0xffd27a,transparent:true,opacity:0});
+const dotE=new THREE.MeshBasicMaterial({color:0x6dffa0,transparent:true,opacity:0});
+const FLOWS=[];
+function wire(group,pts,mat,flow,name){
+  const curve=new THREE.CatmullRomCurve3(pts.map(p=>new THREE.Vector3(p[0],p[1],p[2])));
+  const tube=new THREE.Mesh(new THREE.TubeGeometry(curve,44,0.85,6,false),mat);
+  if(name)tube.userData.n=name;group.add(tube);
+  if(flow){const ds=[];for(let i=0;i<3;i++){const d=new THREE.Mesh(SPH,flow==='e'?dotE:dotP);group.add(d);ds.push(d);}
+    FLOWS.push({curve,dots:ds});}
+}
+const PARTS=[];function reg(g,home,exp){g.position.copy(home);PARTS.push({g,home:home.clone(),exp:exp.clone()});scene.add(g);}
+
+// ================= 천장 + 천장 속 배선 =================
+const ceilG=new THREE.Group();
+const slab=nm(box(640,9,640,mCeil),'천장 슬래브');ceilG.add(slab);
+const hole=nm(cyl(9,10,mDark,28),'전선 인출구');hole.position.y=-.5;ceilG.add(hole);
+const jbox=nm(box(26,11,26,mJbox),'정션박스 — 기존 옥내 배선');jbox.position.set(240,10,62);ceilG.add(jbox);
+wire(ceilG,[[231,6.2,66],[150,6.6,40],[60,6.2,15],[8,2.6,5.5],[3.2,-2.6,3]],mWL,'p','천장 배선 L (갈색)');
+wire(ceilG,[[231,6.2,60],[150,6.4,34],[60,6.0,10],[7,2.4,2.5],[2.2,-2.6,.5]],mWN,'p','천장 배선 N (청색)');
+wire(ceilG,[[231,6.2,54],[150,6.2,28],[60,5.8,5],[6,2.2,-.5],[1.2,-2.6,-2]],mWE,'e','천장 배선 E 접지 (녹색)');
+reg(ceilG,new THREE.Vector3(0,135.5,0),new THREE.Vector3(0,206,0));
+
+// ============ 천장 브라켓 — 중앙 보수구 Ø40 관통 ============
+const FACE=118, GA=55, GB=25; // 가이드: 시작 55° → 잠금 25°
+const brG=new THREE.Group();
+const disc=ring(20,100,12,mWhite);disc.position.y=118;
+brG.add(N(disc,'천장 브라켓 · 사출 — 중앙 보수구 Ø40 (단자 접근·재배선용)'));
+[0,120,240].forEach((A,i)=>{const w=i===0?14:9.5;
+  const f=sector(99,110,A-w,A+w,3.5,mWhite);f.position.y=119.2;
+  brG.add(nm(f,i===0?'림 플랜지 — 와이드 키(오방향 방지)':'림 플랜지 ×3 · 일체 사출'));});
+[62,182,302].forEach(d=>{const a=d*D2R;const s=nm(cyl(2.6,.8,mDark,20),'천장 고정 나사홀');
+  s.position.set(80*Math.cos(a),FACE-.1,80*Math.sin(a));brG.add(s);});
+const gArc=sector(85,89,GB,GA,0.8,mGuide);gArc.position.y=117.5;
+brG.add(nm(gArc,'회전 가이드 30° — 인쇄/각인 (사각등 정렬용)'));
+const sm=nm(cyl(2.4,1.2,mStart,18),'시작 마커 ▼ — 여기에 포인터 맞춰 삽입');
+sm.position.set(92*Math.cos(GA*D2R),117.5,92*Math.sin(GA*D2R));brG.add(sm);
+const lm=nm(cyl(2.4,1.2,mLock,18),'잠금 마커 ● — 포인터가 닿으면 잠금·통전');
+lm.position.set(92*Math.cos(GB*D2R),117.5,92*Math.sin(GB*D2R));brG.add(lm);
+reg(brG,new THREE.Vector3(0,0,0),new THREE.Vector3(0,0,0));
+
+// 자석 링 (기성품)
+const magG=new THREE.Group();
+for(let i=0;i<20;i++){const a=i/20*Math.PI*2;const m=nm(box(5.5,3,4.4,mMag),'맥세이프 자석 링 · 기성품 — 정렬·예압');
+  m.position.set(31.5*Math.cos(a),119.5,31.5*Math.sin(a));m.rotation.y=Math.PI/2-a;magG.add(m);}
+reg(magG,new THREE.Vector3(0,0,0),new THREE.Vector3(0,-36,0));
+
+// ============ 전원부: 단자대(보수구 노출) + 자석 바깥 접점 ============
+const coreG=new THREE.Group();
+const tb=nm(box(26,8.5,15,mTerm),'레버 단자대 · 기성품 — 보수구로 접근');tb.position.set(0,125.7,6);coreG.add(tb);
+[-6,0,6].forEach(x=>{const lv=nm(box(3.2,2.4,1.6,mLever),'레버 단자 (L·N·E 원터치)');lv.position.set(x,121,6);coreG.add(lv);});
+const padE=sector(57,63,12,55,0.9,mE);padE.position.y=117.5;coreG.add(nm(padE,'접지 E 패드 — 긴 호 · 선연결·후분리'));
+const padL=nm(cyl(3,1.2,mGold,24),'전원 패드 L — 매립 포켓');padL.position.set(50,117.5,0);coreG.add(padL);
+const padN=nm(cyl(3,1.2,mGold,24),'전원 패드 N — 매립 포켓');padN.position.set(-50,117.5,0);coreG.add(padN);
+[[50,0],[-50,0]].forEach(p=>{const rk=new THREE.Mesh(new THREE.TorusGeometry(4.7,.7,10,30),mDark);
+  rk.rotation.x=Math.PI/2;rk.position.set(p[0],117.9,p[1]);coreG.add(nm(rk,'절연 포켓 림'));});
+wire(coreG,[[6.6,132.8,1.5],[7,127,4],[6,122.2,5.6]],mWL,'p','인입선 L');
+wire(coreG,[[-6.6,132.8,1.5],[-7,127,4],[-6,122.2,5.6]],mWN,'p','인입선 N');
+wire(coreG,[[0,132.8,2.5],[0,127,4.5],[0,122.2,5.6]],mWE,'e','인입선 E');
+wire(coreG,[[6,121.8,9],[20,121.4,6],[38,120.4,2],[48,118.8,.6]],mWL,'p','부스바 L → 패드');
+wire(coreG,[[-6,121.8,9],[-20,121.4,6],[-38,120.4,-2],[-48,118.8,-.6]],mWN,'p','부스바 N → 패드');
+wire(coreG,[[0,121.9,10],[14,121.2,22],[32,119.8,34],[48.5,118.9,33]],mWE,'e','부스바 E → 접지 호');
+reg(coreG,new THREE.Vector3(0,0,0),new THREE.Vector3(0,-54,0));
+
+// ================= 기기측 =================
+const adG=new THREE.Group();scene.add(adG);
+const SUB=[];function sreg(g,exp){adG.add(g);SUB.push({g,exp});}
+
+const adH=new THREE.Group();
+const floor0=ring(18,118,4,mWhite2);floor0.position.y=-4;adH.add(floor0);
+[[17,108],[132,228],[252,343]].forEach(s=>{
+  const lo=sector(104,115,s[0],s[1],4.4,mWhite2);lo.position.y=0;adH.add(lo);
+  const web=sector(111.5,115,s[0],s[1],3.9,mWhite2);web.position.y=4.4;adH.add(web);
+  const up=sector(104,115,s[0],s[1],5.2,mWhite2);up.position.y=8.3;adH.add(up);
+});
+const shell=ring(115,118,13.5,mWhite2);shell.position.y=0;adH.add(shell);
+N(adH,'어댑터 음각 포켓 · 사출 — 6°부터 낙하 불가 림');
+const ptr=nm(box(8,2.5,4,mStart),'정렬 포인터 — 시작▼에 맞춰 삽입, ●에서 잠금');
+ptr.position.set(121*Math.cos(GA*D2R),12.5,121*Math.sin(GA*D2R));ptr.rotation.y=-GA*D2R;adH.add(ptr);
+sreg(adH,new THREE.Vector3(0,0,0));
+
+const domeG=new THREE.Group();
+function dome(deg,r,mat,name){const a=deg*D2R,X=r*Math.cos(a),Z=r*Math.sin(a);
+  const b=nm(cyl(2.4,1.0,mat,20),name);b.position.set(X,.5,Z);domeG.add(b);
+  const s=nm(new THREE.Mesh(new THREE.SphereGeometry(1.9,22,16),mat),name);s.position.set(X,1.4,Z);domeG.add(s);}
+dome(70,60,mE,'접지 돔 스프링 — 15°부터 선연결');
+dome(30,50,mGold,'돔 스프링 L — “착”=클릭+통전');
+dome(210,50,mGold,'돔 스프링 N — “착”=클릭+통전');
+sreg(domeG,new THREE.Vector3(0,20,0));
+
+const ringP=new THREE.Group();
+const tor=nm(new THREE.Mesh(new THREE.TorusGeometry(31.5,1.6,10,60),mSteel),'정렬용 철 링 · 프레스');
+tor.rotation.x=Math.PI/2;tor.position.y=1.7;ringP.add(tor);
+sreg(ringP,new THREE.Vector3(0,30,0));
+
+// 기기 전기 (팬 좌표 = -30° 회전 공간)
+const elecP=new THREE.Group();elecP.rotation.y=-30*D2R;
+const drv=nm(box(38,12,22,mTerm),'컨버터 — 220V AC→DC');drv.position.set(135,1,48);drv.rotation.y=-20*D2R;elecP.add(drv);
+const gscrew=nm(cyl(2.2,1.6,mSteel,16),'접지 섀시 포인트');gscrew.position.set(90,-4,-40);elecP.add(gscrew);
+wire(elecP,[[50,1,0],[55,-2,6],[90,-3.6,28],[120,-1.5,42]],mWL,'p','기기 배선 L → 컨버터');
+wire(elecP,[[-50,1,0],[-54,-2,-8],[20,-4.2,-50],[100,-3,5],[120,-1.5,38]],mWN,'p','기기 배선 N → 컨버터');
+wire(elecP,[[-10.4,1,59.1],[-12,-2,55],[40,-4,5],[88,-4,-37]],mWE,'e','기기 접지 E → 섀시');
+wire(elecP,[[150,-1,56],[132,-4,56],[118,-7,56]],mWW,'p','컨버터 출력 → LED 모듈①');
+wire(elecP,[[148,-1,50],[112,-3,5],[97,-6,-50],[118,-7.5,-56]],mWW,'p','컨버터 출력 → LED 모듈②');
+sreg(elecP,new THREE.Vector3(0,-14,0));
+
+// ----- 사각 방등 460각 (잠금 시 벽과 평행 = 삽입 시 -30°) -----
+const fixSq=new THREE.Group();fixSq.rotation.y=-30*D2R;
+const pan=nm(box(460,15,460,mFix),'사각 방등 460각 — 예시 기기');pan.position.y=-12.5;fixSq.add(pan);
+const lip=nm(box(472,5,472,mFix),'방등 프레임');lip.position.y=-20.5;fixSq.add(lip);
+[-56,56].forEach(z=>{
+  const bar=nm(box(220,4,28,mAlu),'LED 모듈 — 알루미늄 PCB 바');bar.position.set(0,-9,z);fixSq.add(bar);
+  for(let i=0;i<8;i++){const d=nm(cyl(2.2,1.1,mLed,14),'LED 칩');d.position.set(-94+i*27,-11.4,z);fixSq.add(d);}
+});
+sreg(fixSq,new THREE.Vector3(0,-40,0));
+const difSq=new THREE.Group();difSq.rotation.y=-30*D2R;
+difSq.add(nm(box(444,3.2,444,mDiff),'확산판'));difSq.children[0].position.y=-22.6;
+sreg(difSq,new THREE.Vector3(0,-56,0));
+
+// ----- 원형 방등 Ø460 (방향 무관) -----
+const fixRd=new THREE.Group();
+const panR=nm(cyl(230,15,mFix,96),'원형 방등 Ø460 — 예시 기기');panR.position.y=-12.5;fixRd.add(panR);
+const rimR=nm(new THREE.Mesh(new THREE.TorusGeometry(225,5,14,110),mFix),'방등 프레임');
+rimR.rotation.x=Math.PI/2;rimR.position.y=-20.5;fixRd.add(rimR);
+[-56,56].forEach(z=>{
+  const bar=nm(box(220,4,28,mAlu),'LED 모듈 — 알루미늄 PCB 바');bar.position.set(0,-9,z);fixRd.add(bar);
+  for(let i=0;i<8;i++){const d=nm(cyl(2.2,1.1,mLed,14),'LED 칩');d.position.set(-94+i*27,-11.4,z);fixRd.add(d);}
+});
+sreg(fixRd,new THREE.Vector3(0,-40,0));
+const difRd=new THREE.Group();
+const difR=nm(cyl(218,3.2,mDiff,96),'확산판');difR.position.y=-22.6;difRd.add(difR);
+sreg(difRd,new THREE.Vector3(0,-56,0));
+
+// ================= 상태 =================
+const KEY=[
+ {y:6,x:18,r:0},{y:104,x:0,r:0},{y:114.3,x:0,r:0},
+ {y:114.3,x:0,r:15*D2R},{y:114.6,x:0,r:30*D2R}];
+function ST(i){
+  const sq=S.shape==='sq';
+  return [
+   '분리 — 부품에 <b>마우스 올리기/탭</b>하면 명칭이 표시됩니다',
+   sq?'<b>① 자석 정렬</b> — 사각등은 포인터▼를 시작 마커에 맞춰 비스듬히(−30°) 접근'
+     :'<b>① 자석 정렬</b> — 원형등은 방향 무관, 자석이 중심·시작각을 스냅',
+   '<b>② 삽입</b> — 플랜지가 게이트 통과 · 와이드 키로 오방향 차단 · 통전 ✕',
+   '<b>③ 회전 15°</b> — 6°부터 <g>낙하 불가</g> · 접지 E 선연결 · 포인터가 ●로 이동 중',
+   sq?'<b>④ 30° 잠금</b> — 포인터=● 도달, 사각등이 벽과 평행 → “착” + L·N 통전·점등'
+     :'<b>④ 30° 잠금</b> — 포인터=● 도달 → “착” + L·N 통전·점등'][i];
+}
+const S={step:0,auto:true,explode:false,section:false,xray:false,shape:'sq'};
+const cur={y:6,x:18,r:0,ex:0,pw:0,eg:0};let clicked=false,dwell=0,T=0;
+const statusEl=document.getElementById('status'),needle=document.getElementById('needle');
+
+const stepsEl=document.getElementById('steps');
+const SBT=['⓪ 분리','① 정렬','② 삽입','③ 15°·접지','④ 30°·통전'].map((t,i)=>{
+  const b=document.createElement('button');b.textContent=t;
+  b.onclick=()=>{S.auto=false;S.explode=false;S.step=i;sync();};
+  stepsEl.appendChild(b);return b;});
+const bAuto=document.getElementById('bAuto'),bShape=document.getElementById('bShape'),
+      bExp=document.getElementById('bExp'),bSec=document.getElementById('bSec'),bXr=document.getElementById('bXr');
+const XM=[mWhite,mWhite2,mFix,mDark,mDiff,mTerm,mCeil];
+function setX(on){XM.forEach(m=>{m.transparent=on;m.opacity=on?(m===mDiff?0.12:(m===mCeil?0.15:0.2)):1;m.depthWrite=!on;m.needsUpdate=true;});}
+function applyShape(){
+  const sq=S.shape==='sq';
+  fixSq.visible=difSq.visible=sq;fixRd.visible=difRd.visible=!sq;
+  bShape.textContent=sq?'⚪ 원형으로':'⬛ 사각으로';
+}
+applyShape();
+bAuto.onclick=()=>{S.auto=!S.auto;if(S.auto)S.explode=false;sync();};
+bShape.onclick=()=>{S.shape=S.shape==='sq'?'rd':'sq';applyShape();sync();};
+bExp.onclick=()=>{S.explode=!S.explode;if(S.explode){S.auto=false;S.step=0;}sync();};
+bSec.onclick=()=>{S.section=!S.section;renderer.clippingPlanes=S.section?[new THREE.Plane(new THREE.Vector3(0,0,-1),0)]:[];sync();};
+bXr.onclick=()=>{S.xray=!S.xray;setX(S.xray);sync();};
+function sync(){
+  SBT.forEach((b,i)=>{b.classList.toggle('on',!S.explode&&i===S.step);b.disabled=S.explode;});
+  bAuto.classList.toggle('on',S.auto);bAuto.textContent=S.auto?'⏸ 자동 재생':'▶ 자동 재생';
+  bExp.classList.toggle('on',S.explode);bSec.classList.toggle('on',S.section);bXr.classList.toggle('on',S.xray);
+  statusEl.innerHTML=S.explode?'<b>분해도</b> — BOM 8종 = 사출 2벌 + 기성품 2 + 프레스 4 (컨버터·LED모듈은 기기 기존품)':ST(S.step);
+}
+sync();
+
+// ----- 카메라 + 호버/탭 명칭 -----
+const tip=document.getElementById('tip');
+const ray=new THREE.Raycaster(),mou=new THREE.Vector2();
+let lastPick=0;
+function pick(cx,cy){
+  try{
+    mou.x=cx/innerWidth*2-1;mou.y=-(cy/innerHeight)*2+1;
+    ray.setFromCamera(mou,camera);
+    const hits=ray.intersectObjects(scene.children,true);
+    for(const h of hits){let o=h.object,name=null,hidden=false;
+      // 부모 그룹까지 전부 확인 — 숨겨진(visible=false) 계열의 부품 이름이 뜨지 않게
+      while(o){if(o.visible===false){hidden=true;break;}if(!name&&o.userData&&o.userData.n)name=o.userData.n;o=o.parent;}
+      if(hidden)continue;
+      if(name)return name;}
+  }catch(err){}
+  return null;}
+function showTip(n,cx,cy){if(!n){tip.style.display='none';return;}
+  tip.textContent=n;tip.style.display='block';
+  tip.style.left=Math.min(cx+14,innerWidth-230)+'px';
+  tip.style.top=Math.max(cy-34,8)+'px';}
+let tapTimer=null;
+const pts=new Map();let pd=0,downAt=null;
+canvas.addEventListener('pointerdown',e=>{
+  pts.set(e.pointerId,[e.clientX,e.clientY]);downAt=[e.clientX,e.clientY,performance.now()];
+  try{canvas.setPointerCapture(e.pointerId);}catch(err){}
+});
+canvas.addEventListener('pointermove',e=>{
+  if(!pts.has(e.pointerId)){
+    if(e.pointerType==='mouse'){const n2=performance.now();
+      if(n2-lastPick>90){lastPick=n2;showTip(pick(e.clientX,e.clientY),e.clientX,e.clientY);}}
+    return;}
+  const o=pts.get(e.pointerId);
+  if(pts.size===1){th-=(e.clientX-o[0])*.005;ph-=(e.clientY-o[1])*.005;ph=Math.max(.25,Math.min(2.6,ph));}
+  pts.set(e.pointerId,[e.clientX,e.clientY]);
+  if(pts.size===2){const a=[...pts.values()];const d=Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1]);
+    if(pd)dist=Math.max(340,Math.min(1600,dist*pd/d));pd=d;}
+});
+function pend(e){
+  try{
+    if(downAt&&pts.size===1){const dx=e.clientX-downAt[0],dy=e.clientY-downAt[1];
+      if(Math.hypot(dx,dy)<7&&performance.now()-downAt[2]<350){
+        showTip(pick(e.clientX,e.clientY),e.clientX,e.clientY);
+        clearTimeout(tapTimer);tapTimer=setTimeout(()=>{tip.style.display='none';},2400);}}
+  }catch(err){}
+  pts.delete(e.pointerId);pd=0;downAt=null;}
+canvas.addEventListener('pointerup',pend);
+canvas.addEventListener('pointercancel',e=>{pts.delete(e.pointerId);pd=0;downAt=null;});
+canvas.addEventListener('wheel',e=>{e.preventDefault();dist=Math.max(340,Math.min(1600,dist*(1+e.deltaY*.0012)));},{passive:false});
+
+const V=new THREE.Vector3();let last=performance.now();
+function loop(now){
+  requestAnimationFrame(loop);
+  const dt=Math.min(.05,(now-last)/1000);last=now;T+=dt;
+  const k=1-Math.pow(.002,dt),kf=1-Math.pow(.0005,dt);
+  const t=S.explode?{y:-30,x:0,r:0}:KEY[S.step];
+  cur.y+=(t.y-cur.y)*k;cur.x+=(t.x-cur.x)*k;cur.r+=(t.r-cur.r)*k;
+  cur.ex+=((S.explode?1:0)-cur.ex)*k;
+  adG.position.set(cur.x,cur.y,0);adG.rotation.y=cur.r;
+  PARTS.forEach(p=>p.g.position.lerpVectors(p.home,p.exp,cur.ex));
+  SUB.forEach(p=>p.g.position.set(p.exp.x*cur.ex,p.exp.y*cur.ex,p.exp.z*cur.ex));
+  const eOn=!S.explode&&S.step>=3&&cur.r>14.2*D2R&&cur.y>113.8;
+  cur.eg+=((eOn?1:0)-cur.eg)*kf;
+  mE.emissiveIntensity=cur.eg*.7;mWE.emissiveIntensity=cur.eg*.5;dotE.opacity=cur.eg*.95;
+  const locked=!S.explode&&S.step===4&&Math.abs(cur.r-KEY[4].r)<.015&&Math.abs(cur.y-KEY[4].y)<.2;
+  if(locked&&!clicked){clicked=true;const c=document.getElementById('click');c.classList.remove('go');void c.offsetWidth;c.classList.add('go');}
+  if(!locked&&S.step!==4)clicked=false;
+  cur.pw+=((locked?1:0)-cur.pw)*kf;
+  mDiff.emissiveIntensity=cur.pw*1.15;mLed.emissiveIntensity=cur.pw*2.2;
+  ledLight.intensity=cur.pw*1.9;mGold.emissiveIntensity=cur.pw*.6;
+  mWL.emissiveIntensity=cur.pw*.5;mWN.emissiveIntensity=cur.pw*.5;mWW.emissiveIntensity=cur.pw*.4;
+  dotP.opacity=cur.pw*.95;
+  for(let fi=0;fi<FLOWS.length;fi++){const f=FLOWS[fi];
+    for(let i=0;i<f.dots.length;i++){
+      const u=(T*.2+i/3+fi*.11)%1;
+      try{f.curve.getPointAt(u,V);f.dots[i].position.copy(V);}catch(err){}
+    }}
+  ledLight.position.set(cur.x,cur.y-32,0);
+  needle.style.left=(Math.max(0,Math.min(1,cur.r/(30*D2R)))*100)+'%';
+  const settled=Math.abs(t.y-cur.y)<.4&&Math.abs(t.r-cur.r)<.01&&Math.abs(t.x-cur.x)<.4;
+  if(S.auto&&!S.explode){th+=dt*.05;
+    if(settled){dwell+=dt;const need=[1.0,1.2,1.0,1.3,2.8][S.step];
+      if(dwell>need){dwell=0;S.step=(S.step+1)%5;sync();}}}
+  else dwell=0;
+  updCam();
+  renderer.render(scene,camera);
+}
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

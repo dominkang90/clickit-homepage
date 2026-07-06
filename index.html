@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CLICKIT — 딸깍. 그걸로 끝. | (주)세이프온</title>
+<meta name="description" content="천장 위의 맥세이프, 클리킷. 전기 지식 없이 30초 만에 딸깍 — 원터치 조명 결합 솔루션.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CLICKIT — 딸깍. 그걸로 끝. | (주)세이프온">
+<meta property="og:description" content="천장 위의 맥세이프, 클리킷. 전기 지식 없이 30초 만에 딸깍 — 원터치 조명 결합 솔루션.">
+<meta property="og:image" content="assets/product-render.png"><!-- 도메인 확정 시 절대 URL(https://…)로 교체해야 카톡 미리보기에 뜸 -->
+<script>document.documentElement.classList.add('js')</script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#0a0d13; --bg2:#0e1219; --panel:#131824; --ink:#f2efe8; --mut:#98a1b0;
+  --amber:#ffb648; --warm:#ffd9a0; --blue:#4aa3e8; --blue-d:#2e8fd8; --green:#7fd8a8;
+  --line:rgba(242,239,232,.09);
+  --disp:'Pretendard Variable',Pretendard,sans-serif; --sans:'Pretendard Variable',Pretendard,sans-serif; --mono:'Pretendard Variable',Pretendard,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.75;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--amber);color:#0a0d13}
+
+/* film grain */
+#grain{position:fixed;inset:-50%;width:200%;height:200%;pointer-events:none;z-index:99;opacity:.045;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 8s steps(10) infinite}
+@keyframes grain{0%,100%{transform:translate(0,0)}10%{transform:translate(-2%,1%)}30%{transform:translate(1%,-2%)}50%{transform:translate(-1%,2%)}70%{transform:translate(2%,1%)}90%{transform:translate(-2%,-1%)}}
+
+/* scroll progress */
+#prog{position:fixed;top:0;left:0;height:2.5px;width:0;background:linear-gradient(90deg,var(--amber),var(--warm));z-index:100;box-shadow:0 0 12px rgba(255,182,72,.8)}
+
+/* ---------- nav ---------- */
+nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+  padding:16px 5vw;transition:.4s}
+nav.solid{background:rgba(10,13,19,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+nav .brand{display:flex;align-items:center;gap:10px;font:700 17px var(--mono);letter-spacing:.06em}
+nav .brand .dot{width:21px;height:21px;border-radius:50%;border:4px solid var(--blue-d);border-bottom-color:var(--amber);flex:none;transition:transform .5s}
+nav .brand:hover .dot{transform:rotate(180deg)}
+nav ul{display:flex;gap:26px;list-style:none;font-size:13.5px;font-weight:600}
+nav ul a{color:var(--mut);transition:.2s;position:relative}
+nav ul a::after{content:'';position:absolute;left:0;bottom:-4px;width:0;height:2px;background:var(--amber);transition:.25s}
+nav ul a:hover{color:var(--ink)}
+nav ul a:hover::after{width:100%}
+nav ul a.b2g{color:var(--green)}
+#menuBtn{display:none;background:none;border:0;color:var(--ink);font-size:24px;cursor:pointer;padding:4px 10px;line-height:1}
+@media(max-width:760px){
+  #menuBtn{display:block}
+  nav ul{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;
+    background:rgba(10,13,19,.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:6px 5vw 14px}
+  nav ul.open{display:flex}
+  nav ul li{padding:12px 0;border-bottom:1px solid var(--line)}
+  nav ul li:last-child{border-bottom:none}
+}
+
+/* ---------- hero ---------- */
+#hero{position:relative;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;overflow:hidden;padding:100px 6vw 0}
+#hero .roomglow{position:absolute;inset:0;background:radial-gradient(60% 46% at 50% 24%,rgba(255,190,100,.16),transparent 70%);
+  opacity:0;transition:opacity 1.4s ease}
+#hero.lit .roomglow{opacity:1}
+/* lamp */
+#lamp{position:relative;width:min(300px,72vw);cursor:pointer;-webkit-tap-highlight-color:transparent;z-index:3;margin-bottom:6px}
+#lamp .plate{width:58px;height:12px;border-radius:0 0 10px 10px;background:#2b3242;margin:0 auto;transition:.7s}
+#lamp .stem{width:7px;height:22px;background:#2b3242;margin:0 auto;transition:.7s}
+#lamp .shade{position:relative;width:168px;height:52px;margin:0 auto;background:#333b4d;border-radius:50% 50% 10px 10px/72% 72% 10px 10px;
+  transition:.7s;box-shadow:inset 0 -9px 0 rgba(0,0,0,.3)}
+#hero.lit #lamp .shade{background:#fff8ec;box-shadow:inset 0 -9px 0 rgba(0,0,0,.05),0 0 70px 22px rgba(255,206,130,.85),0 0 160px 60px rgba(255,190,100,.35)}
+#lamp .cord{position:absolute;right:14px;top:52px;width:1.5px;height:104px;background:#5a6478;transition:.6s}
+#lamp .cord::after{content:'';position:absolute;bottom:-13px;left:-5.5px;width:13px;height:13px;border-radius:50%;
+  background:var(--amber);box-shadow:0 0 0 5px rgba(255,182,72,.18),0 0 18px rgba(255,182,72,.9);animation:tug 1.9s ease-in-out infinite}
+#hero.lit #lamp .cord::after{animation:none;box-shadow:0 0 0 4px rgba(255,182,72,.14)}
+@keyframes tug{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+/* light cone + dust */
+#cone{position:absolute;left:50%;top:calc(50% - 210px);transform:translateX(-50%);width:0;height:0;pointer-events:none;z-index:1;
+  border-left:min(300px,38vw) solid transparent;border-right:min(300px,38vw) solid transparent;
+  border-top:78svh solid rgba(255,210,140,.10);filter:blur(18px);opacity:0;transition:opacity 1.2s .15s}
+#hero.lit #cone{opacity:1}
+.dust{position:absolute;width:3px;height:3px;border-radius:50%;background:rgba(255,220,160,.85);opacity:0;pointer-events:none;z-index:2}
+#hero.lit .dust{animation:float 7s linear infinite}
+.dust:nth-child(2){left:44%;top:34%;animation-delay:.6s!important}
+.dust:nth-child(3){left:56%;top:30%;animation-delay:1.8s!important;width:2px;height:2px}
+.dust:nth-child(4){left:49%;top:42%;animation-delay:3s!important}
+.dust:nth-child(5){left:60%;top:46%;animation-delay:4.2s!important;width:2px;height:2px}
+.dust:nth-child(6){left:40%;top:48%;animation-delay:5.4s!important}
+@keyframes float{0%{opacity:0;transform:translateY(0)}12%{opacity:.9}88%{opacity:.7}100%{opacity:0;transform:translateY(90px)}}
+/* headline */
+#hero h1{font:900 clamp(72px,15vw,190px)/1.02 var(--disp);letter-spacing:-.05em;z-index:3;color:#3a4152;transition:color 1.1s,text-shadow 1.1s}
+/* JS가 꺼져 있으면 불 켜진 모습을 기본값으로 */
+html:not(.js) #hero h1{color:var(--ink)}
+html:not(.js) #hero h1 .dot2{color:var(--amber)}
+#hero h1 .dot2{color:#4a4335;transition:color 1.1s}
+#hero.lit h1{color:var(--ink);text-shadow:0 0 60px rgba(255,200,110,.35)}
+#hero.lit h1 .dot2{color:var(--amber)}
+#hero .sub{margin-top:22px;font-size:clamp(15px,2.1vw,20px);color:var(--mut);z-index:3;font-weight:500;transition:color 1s}
+#hero.lit .sub{color:#cfd6e0}
+#hero .sub b{color:var(--warm);font-weight:700}
+#hero .hint{margin-top:26px;font:500 12px var(--mono);color:#68758c;letter-spacing:.18em;z-index:3;transition:opacity .6s}
+#hero.lit .hint{opacity:0}
+#hero .cta-row{margin-top:34px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;z-index:3;transition:.8s .5s}
+.js #hero:not(.lit) .cta-row{opacity:0;transform:translateY(16px);visibility:hidden;pointer-events:none}
+.btn{display:inline-block;padding:14px 28px;border-radius:999px;font-weight:700;font-size:15px;transition:.25s;border:1.5px solid transparent;cursor:pointer}
+.btn.amber{background:var(--amber);color:#141005}
+.btn.amber:hover{background:var(--warm);transform:translateY(-3px);box-shadow:0 14px 34px -12px rgba(255,182,72,.55)}
+.btn.line{border-color:rgba(242,239,232,.3);color:var(--ink)}
+.btn.line:hover{border-color:var(--ink);transform:translateY(-3px)}
+/* marquee */
+#marq{position:relative;z-index:3;width:100vw;margin-top:auto;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  overflow:hidden;padding:15px 0;background:rgba(10,13,19,.5)}
+#marq .track{display:flex;gap:0;width:max-content;animation:marq 26s linear infinite}
+#marq span{font:500 13px var(--mono);letter-spacing:.16em;color:var(--mut);padding:0 26px;white-space:nowrap}
+#marq b{color:var(--amber);font-weight:700}
+@keyframes marq{to{transform:translateX(-50%)}}
+
+/* ---------- shared ---------- */
+section{padding:130px 6vw;position:relative}
+.wrap{max-width:1120px;margin:0 auto}
+.kicker{font:700 12px var(--mono);letter-spacing:.26em;color:var(--amber);margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.kicker::before{content:'';width:34px;height:1.5px;background:var(--amber)}
+h2{font:850 clamp(30px,5vw,56px)/1.24 var(--disp);letter-spacing:-.035em;margin-bottom:22px}
+h2 em{font-style:normal;color:var(--amber)}
+h2 .bl{color:var(--blue)}
+.lead{color:var(--mut);font-size:clamp(15px,1.9vw,18px);max-width:640px;font-weight:450}
+.lead b{color:var(--ink)}
+.js .reveal{opacity:0;transform:translateY(36px);transition:opacity .9s cubic-bezier(.2,.7,.3,1),transform .9s cubic-bezier(.2,.7,.3,1)}
+.js .reveal.in{opacity:1;transform:none}
+
+/* ---------- problem ---------- */
+#problem{background:var(--bg2)}
+#problem h2 .strike{position:relative;white-space:nowrap}
+#problem h2 .strike::after{content:'';position:absolute;left:-2%;top:54%;width:104%;height:5px;background:var(--amber);
+  transform:scaleX(0);transform-origin:left;transition:transform .8s .5s cubic-bezier(.2,.7,.3,1)}
+#problem h2.in .strike::after{transform:scaleX(1)}
+.painGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:60px}
+.pain{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:34px 28px;transition:.35s;position:relative;overflow:hidden}
+.pain::before{content:'';position:absolute;inset:0;background:radial-gradient(120% 90% at 50% -20%,rgba(255,182,72,.12),transparent 60%);opacity:0;transition:.35s}
+.pain:hover{transform:translateY(-8px);border-color:rgba(255,182,72,.45)}
+.pain:hover::before{opacity:1}
+.pain .no{font:700 12px var(--mono);color:#5b6577;letter-spacing:.2em}
+.pain h3{font-size:19px;font-weight:800;margin:14px 0 8px}
+.pain p{font-size:14.5px;color:var(--mut)}
+
+/* ---------- scrollytelling steps ---------- */
+#solution .stage{display:grid;grid-template-columns:1fr 1fr;gap:70px;margin-top:70px;align-items:start}
+.artWrap{position:sticky;top:110px}
+/* 모바일: 그림을 위에 고정해 단계 애니메이션이 계속 보이게 */
+@media(max-width:860px){
+  #solution .stage{display:block;margin-top:50px}
+  .artWrap{position:sticky;top:60px;z-index:5;margin-bottom:28px}
+  .artWrap .stepArt{height:34vh;min-height:230px}
+}
+.stepArt{position:relative;height:min(480px,64vh);min-height:360px;background:linear-gradient(180deg,#10151f,#0c1017);
+  border-radius:26px;border:1px solid var(--line);overflow:hidden}
+.stepArt .ceil{position:absolute;top:0;left:0;right:0;height:36px;background:#1c2330}
+.stepArt .base{position:absolute;top:36px;left:50%;transform:translateX(-50%);width:130px;height:24px;
+  background:#232b3a;border:2px solid #39445a;border-top:none;border-radius:0 0 65px 65px;z-index:2}
+.stepArt .base::after{content:'';position:absolute;left:50%;top:5px;transform:translateX(-50%);
+  width:30px;height:13px;border-radius:0 0 15px 15px;background:#8b94a3}
+.stepArt .mag{position:absolute;top:66px;left:50%;transform:translateX(-50%);width:70px;height:26px;border-radius:50%;
+  border:2px dashed rgba(74,163,232,.7);opacity:0;transition:.6s;z-index:2;animation:none}
+.stepArt.s2 .mag{opacity:1;animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:translateX(-50%) scale(1);opacity:.9}50%{transform:translateX(-50%) scale(1.35);opacity:.3}}
+.stepArt .light{position:absolute;left:50%;top:64%;transform:translateX(-50%);width:200px;height:36px;
+  background:#e8e4da;border:2px solid #b9b4a8;border-radius:50%/62%;transition:top 1.1s cubic-bezier(.3,1.25,.45,1),box-shadow .7s;z-index:3}
+.stepArt.s2 .light{top:22%}
+.stepArt.s3 .light{top:19%;box-shadow:0 30px 90px 10px rgba(255,200,110,.55),0 60px 160px 40px rgba(255,190,100,.22)}
+.stepArt .snapFx{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);font:900 30px var(--disp);
+  color:var(--amber);opacity:0;z-index:4;pointer-events:none;text-shadow:0 0 24px rgba(255,182,72,.8)}
+.stepArt.s3 .snapFx{animation:pop 1.2s ease .5s forwards}
+@keyframes pop{0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}22%{opacity:1;transform:translate(-50%,-50%) scale(1.12)}42%{transform:translate(-50%,-50%) scale(1)}82%{opacity:1}100%{opacity:0;transform:translate(-50%,-95%)}}
+.stepArt .cap{position:absolute;left:0;right:0;bottom:18px;text-align:center;font:500 12px var(--mono);color:#5b6577;letter-spacing:.14em}
+.stepList{display:grid;gap:8vh;padding:6vh 0 30vh}
+@media(max-width:860px){.stepList{gap:40px;padding:0 0 10vh}}
+.step{padding:30px 30px 30px 34px;border-left:2.5px solid var(--line);transition:.4s;border-radius:0 18px 18px 0}
+.step.on{border-left-color:var(--amber);background:linear-gradient(90deg,rgba(255,182,72,.07),transparent 70%)}
+.step .num{font:700 12.5px var(--mono);color:var(--blue);letter-spacing:.2em}
+.step h3{font-size:26px;font-weight:800;margin:10px 0 12px}
+.step p{color:var(--mut);font-size:15.5px}
+.step .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.chip{font:500 12px var(--mono);color:#a8cdec;background:rgba(74,163,232,.09);
+  border:1px solid rgba(74,163,232,.3);padding:6px 12px;border-radius:999px}
+
+/* ---------- stats ---------- */
+#stats{background:linear-gradient(180deg,var(--bg2),#131007 60%,var(--bg2));padding:110px 6vw;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.statRow{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:34px;max-width:1120px;margin:0 auto;text-align:center}
+.stat .n{font:900 clamp(46px,6.5vw,76px)/1 var(--disp);letter-spacing:-.03em;color:var(--warm);text-shadow:0 0 40px rgba(255,182,72,.35);font-variant-numeric:tabular-nums}
+.stat .n small{font-size:.4em;color:var(--amber)}
+.stat .l{font-size:14px;color:var(--mut);margin-top:12px;font-weight:500}
+
+/* ---------- product ---------- */
+.prodGrid{display:grid;grid-template-columns:1.15fr 1fr;gap:60px;align-items:center;margin-top:60px}
+@media(max-width:880px){.prodGrid{grid-template-columns:1fr}}
+#tilt{border-radius:24px;overflow:hidden;border:1px solid var(--line);background:#fff;
+  box-shadow:0 40px 90px -34px rgba(0,0,0,.8);transition:transform .18s ease-out,opacity .9s cubic-bezier(.2,.7,.3,1);will-change:transform}
+.specList{list-style:none}
+.specList li{display:flex;justify-content:space-between;align-items:baseline;gap:18px;padding:17px 4px;border-bottom:1px solid var(--line);font-size:15px;color:var(--mut);font-weight:500}
+.specList li b{font-family:var(--mono);font-weight:700;color:var(--warm);text-align:right;font-size:14px}
+video{width:100%;border-radius:24px;border:1px solid var(--line);margin-top:70px;background:#000}
+
+/* ---------- tech ---------- */
+#tech{background:var(--bg2)}
+.techGrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:60px;align-items:start}
+@media(max-width:840px){.techGrid{grid-template-columns:1fr}}
+.techCard{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:32px;transition:.35s}
+.techCard:hover{border-color:rgba(74,163,232,.5);transform:translateY(-6px)}
+.techCard h3{font-size:19px;font-weight:800;margin-bottom:10px}
+.techCard p{font-size:14.5px;color:var(--mut)}
+.techCard .patent{font:700 16px var(--mono);color:var(--warm);margin-top:16px;display:block}
+.techCard img{border-radius:14px;margin-top:20px;background:#fff}
+.simBig{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;
+  background:linear-gradient(100deg,#12203a,#0e1826);border:1px solid rgba(74,163,232,.4);position:relative;overflow:hidden}
+.simBig::before{content:'3D';position:absolute;right:-10px;bottom:-42px;font:900 150px var(--disp);color:rgba(74,163,232,.08)}
+
+/* ---------- story ---------- */
+.storyGrid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:60px}
+@media(max-width:840px){.storyGrid{grid-template-columns:1fr}}
+.polar{background:#f4f1ea;border-radius:6px;padding:14px 14px 0;box-shadow:0 26px 60px -22px rgba(0,0,0,.7);transition:.4s}
+.polar:nth-child(1){transform:rotate(-1.6deg)}
+.polar:nth-child(2){transform:rotate(1.4deg)}
+.polar:hover{transform:rotate(0) translateY(-8px)}
+.polar img{border-radius:3px}
+.polar figcaption{padding:14px 6px 16px;font:500 13px var(--mono);color:#4a5262;letter-spacing:.02em}
+
+/* ---------- roadmap ---------- */
+.timeline{margin-top:64px;position:relative;padding-left:30px}
+.timeline::before{content:'';position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--blue),var(--amber))}
+.tItem{position:relative;padding:0 0 52px 30px}
+.tItem::before{content:'';position:absolute;left:-30px;top:9px;width:15px;height:15px;border-radius:50%;
+  background:var(--bg);border:3.5px solid var(--blue);box-shadow:0 0 16px rgba(74,163,232,.5)}
+.tItem:last-child::before{border-color:var(--amber);box-shadow:0 0 16px rgba(255,182,72,.6)}
+.tItem .y{font:900 26px var(--disp);letter-spacing:-.02em;color:var(--blue)}
+.tItem:last-child .y{color:var(--amber)}
+.tItem h3{font-size:18px;font-weight:800;margin:8px 0 6px}
+.tItem p{color:var(--mut);font-size:14.5px;max-width:580px}
+
+/* ---------- b2g band ---------- */
+#b2g{padding:90px 6vw;background:radial-gradient(90% 130% at 50% -30%,rgba(127,216,168,.13),transparent 60%),var(--bg2);
+  border-top:1px solid var(--line)}
+#b2g .wrap{display:flex;align-items:center;justify-content:space-between;gap:34px;flex-wrap:wrap}
+#b2g .kicker{color:var(--green)}
+#b2g .kicker::before{background:var(--green)}
+#b2g .btn{background:var(--green);color:#0c1712}
+#b2g .btn:hover{transform:translateY(-3px);box-shadow:0 14px 34px -12px rgba(127,216,168,.5)}
+
+/* ---------- contact ---------- */
+#contact{text-align:center;padding:150px 6vw 130px;position:relative;overflow:hidden}
+#contact::before{content:'';position:absolute;left:50%;top:0;transform:translateX(-50%);width:2px;height:120px;background:#5a6478}
+#contact .bulb{width:16px;height:16px;border-radius:50%;background:var(--amber);margin:118px auto 40px;position:relative;z-index:2;
+  box-shadow:0 0 24px 6px rgba(255,182,72,.8),0 0 90px 40px rgba(255,182,72,.25);animation:tug 2.2s ease-in-out infinite}
+#contact h2{color:var(--ink)}
+#contact .lead{margin:0 auto 44px}
+footer{background:#070a0f;color:#5b6577;font-size:13px;padding:30px 6vw;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;border-top:1px solid var(--line)}
+footer b{color:var(--mut)}
+
+/* 움직임 줄이기 설정 존중 */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<div id="grain"></div>
+<div id="prog"></div>
+
+<nav id="nav">
+  <a class="brand" href="#hero"><span class="dot"></span>CLICK<b style="color:var(--blue)">IT</b></a>
+  <ul>
+    <li><a href="#problem">왜 클리킷</a></li>
+    <li><a href="#solution">작동 방식</a></li>
+    <li><a href="#product">제품</a></li>
+    <li><a href="#tech">기술·특허</a></li>
+    <li><a href="#roadmap">로드맵</a></li>
+    <li><a class="b2g" href="b2g.html">B2G·ESG</a></li>
+    <li><a href="#contact">문의</a></li>
+  </ul>
+  <button id="menuBtn" aria-label="메뉴 열기">☰</button>
+</nav>
+
+<!-- HERO -->
+<header id="hero">
+  <div class="roomglow"></div>
+  <div id="cone"></div>
+  <i class="dust"></i><i class="dust"></i><i class="dust"></i><i class="dust"></i><i class="dust"></i><i class="dust"></i>
+  <div id="lamp" title="줄을 당겨 불을 켜보세요" role="button" tabindex="0" aria-label="조명 켜고 끄기" aria-pressed="false">
+    <div class="plate"></div>
+    <div class="stem"></div>
+    <div class="shade"></div>
+    <div class="cord"></div>
+  </div>
+  <h1>딸깍<span class="dot2">.</span></h1>
+  <p class="sub">조명 교체의 모든 과정을, 소리 하나로 줄였습니다.<br>천장 위의 맥세이프 — <b>클리킷</b></p>
+  <p class="hint">CLICK THE LIGHT ▲</p>
+  <div class="cta-row">
+    <a class="btn amber" href="#solution">30초의 마법 보기</a>
+    <a class="btn line" href="sim.html" target="_blank">3D 시뮬레이션 체험</a>
+  </div>
+  <div id="marq" aria-hidden="true">
+    <div class="track">
+      <span>30초 교체 <b>—</b></span><span>감전 위험 ZERO <b>—</b></span><span>특허 출원 10-2025-0181954 <b>—</b></span><span>전기 지식 불필요 <b>—</b></span><span>자석 가이드 + 회전 잠금 <b>—</b></span><span>KC 인증 추진 <b>—</b></span>
+      <span>30초 교체 <b>—</b></span><span>감전 위험 ZERO <b>—</b></span><span>특허 출원 10-2025-0181954 <b>—</b></span><span>전기 지식 불필요 <b>—</b></span><span>자석 가이드 + 회전 잠금 <b>—</b></span><span>KC 인증 추진 <b>—</b></span>
+    </div>
+  </div>
+</header>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="wrap">
+    <p class="kicker reveal">01 — PROBLEM</p>
+    <h2 class="reveal">조명 하나 바꾸려고<br><span class="strike">기사님을 불러야 했던</span><br>모든 날들에게.</h2>
+    <p class="lead reveal">전등은 소모품인데, 교체는 공사였습니다. 전선을 만지고, 사다리에 오르고, 출장비를 내고 — 클리킷이 지우려는 건 조명이 아니라 <b>이 과정 전부</b>입니다.</p>
+    <div class="painGrid">
+      <div class="pain reveal"><div class="no">RISK 01</div><h3>감전 위험</h3><p>천장 전선을 직접 만지는 순간, 감전·합선 사고 가능성에 그대로 노출됩니다.</p></div>
+      <div class="pain reveal"><div class="no">RISK 02</div><h3>낙상 위험</h3><p>사다리 위에서 무거운 조명을 든 채 버티는 작업 — 가정 내 사고의 단골 원인입니다.</p></div>
+      <div class="pain reveal"><div class="no">COST 01</div><h3>출장 비용</h3><p>조명 값보다 비싼 출장비와 인건비. 등 하나 바꾸는 데 5만~8만원이 듭니다.</p></div>
+      <div class="pain reveal"><div class="no">COST 02</div><h3>전문 지식</h3><p>결선, 규격, 부하 — 소비자가 알 필요 없어야 할 지식이 진입장벽이 됩니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION (scrollytelling) -->
+<section id="solution">
+  <div class="wrap">
+    <p class="kicker reveal">02 — SOLUTION</p>
+    <h2 class="reveal">부착. 연결. 잠금.<br><em>배우지 않아도 되는</em> 기술.</h2>
+    <p class="lead reveal">천장에 한 번 다는 <b>스마트 플레이트</b>, 조명에 붙는 <b>커넥터</b>. 이 두 조각이 만나는 순간을 아래로 스크롤하며 지켜보세요.</p>
+    <div class="stage">
+      <div class="artWrap reveal">
+        <div class="stepArt s1" id="stepArt">
+          <div class="ceil"></div>
+          <div class="base"></div>
+          <div class="mag"></div>
+          <div class="light"></div>
+          <div class="snapFx">착.</div>
+          <div class="cap" id="artCap">STEP 1 / 3 — ATTACH</div>
+        </div>
+      </div>
+      <div class="stepList">
+        <div class="step on" data-s="1">
+          <p class="num">STEP 1 — ATTACH</p>
+          <h3>플레이트는 딱 한 번</h3>
+          <p>기존 조명 자리에 스마트 플레이트를 한 번만 설치합니다. 기존 배선을 그대로 사용하고, 이후로는 어떤 조명이든 이 자리에서 갈아 끼웁니다.</p>
+          <div class="chips"><span class="chip">최초 1회 설치</span><span class="chip">기존 배선 그대로</span><span class="chip">중앙 보수구 Ø40</span></div>
+        </div>
+        <div class="step" data-s="2">
+          <p class="num">STEP 2 — CONNECT</p>
+          <h3>자석이 자리를 찾아줍니다</h3>
+          <p>조명을 천장 가까이 올리면 자석이 정확한 위치로 끌어당깁니다. 어두운 천장을 더듬으며 나사 구멍을 맞추던 시간은 여기서 사라집니다.</p>
+          <div class="chips"><span class="chip">자석 위치 가이드</span><span class="chip">정렬 자동 보정</span><span class="chip">한 손 작업</span></div>
+        </div>
+        <div class="step" data-s="3">
+          <p class="num">STEP 3 — LOCK</p>
+          <h3>살짝 돌리면, 딸깍</h3>
+          <p>기계식 구조가 잠기며 하중을 지지하고, 동시에 안전 접점이 붙으며 전기가 흐릅니다. 그 소리가 곧 "설치 완료" 신호입니다.</p>
+          <div class="chips"><span class="chip">회전 잠금 구조</span><span class="chip">자동 통전</span><span class="chip">감전 위험 ZERO</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="statRow">
+    <div class="stat reveal"><div class="n"><span data-count="30">0</span><small>초</small></div><div class="l">조명 교체에 걸리는 시간</div></div>
+    <div class="stat reveal"><div class="n"><span data-count="0">0</span><small>회</small></div><div class="l">전선을 직접 만지는 횟수</div></div>
+    <div class="stat reveal"><div class="n"><span data-count="0">0</span><small>원</small></div><div class="l">교체 시 시공 인건비</div></div>
+    <div class="stat reveal"><div class="n"><span data-count="1600">0</span><small>건+</small></div><div class="l">대표가 직접 뛴 조명·전기 현장</div></div>
+  </div>
+</section>
+
+<!-- PRODUCT -->
+<section id="product">
+  <div class="wrap">
+    <p class="kicker reveal">03 — PRODUCT</p>
+    <h2 class="reveal">자석은 <span class="bl">안내</span>만,<br>하중은 구조가, 전기는 접점이.</h2>
+    <p class="lead reveal">자석은 위치를 잡아주는 가이드일 뿐 — 무게는 기계식 잠금이, 전기는 자석 바깥의 안전 접점이 책임집니다. 역할을 셋으로 쪼갠 <b>3중 안전 설계</b>입니다.</p>
+    <div class="prodGrid">
+      <figure id="tilt" class="reveal"><img src="assets/product-render.png" alt="클리킷 스마트 플레이트와 조명 결합 렌더링" width="1024" height="1024"></figure>
+      <ul class="specList reveal">
+        <li>결합 방식 <b>회전 잠금 + 자석 가이드</b></li>
+        <li>전기 연결 <b>회전 시 자동 통전</b></li>
+        <li>표준 사이즈 <b>Ø500mm 대응</b></li>
+        <li>중앙 보수구 <b>Ø40mm</b></li>
+        <li>형태 <b>원형 · 사각 듀얼</b></li>
+        <li>호환성 <b>플레이트 하나, 조명 전부</b></li>
+      </ul>
+    </div>
+    <video class="reveal" src="assets/demo.mp4" controls muted loop playsinline></video>
+  </div>
+</section>
+
+<!-- TECH -->
+<section id="tech">
+  <div class="wrap">
+    <p class="kicker reveal">04 — TECHNOLOGY · IP</p>
+    <h2 class="reveal">아이디어가 아니라,<br><em>출원된 기술</em>입니다.</h2>
+    <div class="techGrid">
+      <div class="techCard reveal">
+        <h3>특허 출원 완료</h3>
+        <p>원터치 조명 결합 구조에 대한 특허를 출원하고 등록 절차를 진행 중입니다. 2026년 상반기 KC 인증을 함께 추진합니다.</p>
+        <span class="patent">출원번호 10-2025-0181954</span>
+      </div>
+      <div class="techCard reveal">
+        <h3>3D 설계 · 시제품 검증</h3>
+        <p>정밀 3D 모델링과 시제품 제작을 마치고, 다양한 조명 제품과의 호환 테스트를 진행 중입니다.</p>
+        <img src="assets/model-3d.png" alt="클리킷 3D 모델링" loading="lazy" width="1201" height="964">
+      </div>
+      <div class="techCard simBig reveal">
+        <div style="max-width:560px">
+          <h3>직접 돌려보는 3D 시뮬레이션</h3>
+          <p>결합 각도별 통전 과정, 분해도, 단면, 전선 투시 — 설명 대신 브라우저에서 바로 만져보세요.</p>
+        </div>
+        <a class="btn amber" href="sim.html" target="_blank">시뮬레이션 열기 →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section id="story">
+  <div class="wrap">
+    <p class="kicker reveal">05 — STORY</p>
+    <h2 class="reveal">1,600번의 현장이 만든<br>한 번의 <em>딸깍</em>.</h2>
+    <p class="lead reveal">조명·전기 현장 1,600건을 직접 뛴 에너지공학 전공 대표가, 매일 마주친 불편함을 스케치 한 장에서 제품까지 밀어붙였습니다.</p>
+    <div class="storyGrid">
+      <figure class="polar reveal"><img src="assets/product-2.png" alt="클리킷 초기 손스케치 도안" loading="lazy" width="2388" height="1668"><figcaption>fig.01 — 첫 스케치. 자석 가이드 구조의 시작.</figcaption></figure>
+      <figure class="polar reveal"><img src="assets/product-3.png" alt="클리킷 설계 도면과 제품 렌더링" loading="lazy" width="1375" height="858"><figcaption>fig.02 — 도면과 렌더링. 스케치가 규격이 되기까지.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="wrap">
+    <p class="kicker reveal">06 — ROADMAP</p>
+    <h2 class="reveal">조명에서 시작해,<br><span class="bl">천장 전체</span>로.</h2>
+    <div class="timeline">
+      <div class="tItem reveal"><div class="y">2025</div><h3>기술 검증</h3><p>특허 출원(10-2025-0181954) · 3D 모델링·시제품 제작 · (주)대일라이팅 유통 LOI · 예비창업패키지 우선선정 · E-SPARK(한국동서발전) · IP디딤돌 완료</p></div>
+      <div class="tItem reveal"><div class="y">2026</div><h3>제품화 · 시장 진입</h3><p>KC 인증 · 양산 체계 구축 · LH·지자체 납품 추진 · 스마트홈 파트너십</p></div>
+      <div class="tItem reveal"><div class="y">2027—</div><h3>천장 플랫폼</h3><p>같은 플레이트에 IoT 스피커, CCTV, 공기질 센서까지 — 천장의 표준 결합 인터페이스로 확장합니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- B2G BAND -->
+<section id="b2g">
+  <div class="wrap">
+    <div style="max-width:640px">
+      <p class="kicker reveal">FOR GOVERNMENT · ESG</p>
+      <h2 class="reveal" style="font-size:clamp(26px,3.6vw,42px)">지자체·공공기관이신가요?</h2>
+      <p class="lead reveal">돌봄 × 에너지 복지 — 취약계층 주거 안전 조명 개선 사업 제안서와 <b>도입 효과 계산기</b>를 준비했습니다.</p>
+    </div>
+    <a class="btn reveal" href="b2g.html">B2G·ESG 제안 보기 →</a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="bulb reveal"></div>
+  <p class="kicker reveal" style="justify-content:center">07 — CONTACT</p>
+  <h2 class="reveal">다음 딸깍은,<br><em>당신의 천장</em>에서.</h2>
+  <p class="lead reveal">납품 · 협업 · 투자 — 어떤 이야기든 환영합니다. 딸깍, 하고 답장 드릴게요.</p>
+  <a class="btn amber reveal" href="mailto:safeon.lab@gmail.com">이메일 보내기 — safeon.lab@gmail.com</a>
+</section>
+
+<footer>
+  <div><b>(주)세이프온</b> · CLICKIT — 원터치 조명 결합 솔루션</div>
+  <div>특허 출원 10-2025-0181954 · © 2026 SafeOn Inc.</div>
+</footer>
+
+<script>
+// hero light switch
+const hero=document.getElementById('hero'),lamp=document.getElementById('lamp'),nav=document.getElementById('nav');
+let touched=false; // 사용자가 직접 껐다면 자동 점등이 다시 켜지 않도록
+function setLamp(on){hero.classList.toggle('lit',on);lamp.setAttribute('aria-pressed',on);}
+lamp.addEventListener('click',()=>{touched=true;setLamp(!hero.classList.contains('lit'));});
+lamp.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();lamp.click();}});
+setTimeout(()=>{if(!touched&&!hero.classList.contains('lit'))setLamp(true);},2800); // 기다리는 사용자를 위한 자동 점등
+
+// mobile menu
+const menuBtn=document.getElementById('menuBtn'),navList=document.querySelector('nav ul');
+menuBtn.addEventListener('click',()=>navList.classList.toggle('open'));
+navList.addEventListener('click',e=>{if(e.target.tagName==='A')navList.classList.remove('open');});
+
+// nav + scroll progress
+addEventListener('scroll',()=>{
+  nav.classList.toggle('solid',scrollY>40);
+  const h=document.documentElement;
+  document.getElementById('prog').style.width=(scrollY/(h.scrollHeight-h.clientHeight)*100)+'%';
+},{passive:true});
+
+// reveal
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.15});
+document.querySelectorAll('.reveal, #problem h2').forEach(el=>io.observe(el));
+
+// count-up
+const cio=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting)return;cio.unobserve(e.target);
+  const el=e.target,end=+el.dataset.count,t0=performance.now();
+  (function tick(t){const p=Math.min((t-t0)/1400,1);el.textContent=Math.round(end*(1-Math.pow(1-p,3))).toLocaleString('ko-KR');if(p<1)requestAnimationFrame(tick);})(t0);
+}),{threshold:.6});
+document.querySelectorAll('[data-count]').forEach(el=>cio.observe(el));
+
+// scrollytelling: 화면 중앙에 온 step에 맞춰 왼쪽 그림 상태 전환
+const stepArt=document.getElementById('stepArt'),artCap=document.getElementById('artCap');
+const caps={1:'STEP 1 / 3 — ATTACH',2:'STEP 2 / 3 — CONNECT',3:'STEP 3 / 3 — LOCK'};
+const sio=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting)return;
+  const s=e.target.dataset.s;
+  stepArt.className='stepArt s'+s;
+  artCap.textContent=caps[s];
+  document.querySelectorAll('.step').forEach(x=>x.classList.toggle('on',x===e.target));
+}),{rootMargin:'-42% 0px -42% 0px'});
+document.querySelectorAll('.step').forEach(el=>sio.observe(el));
+
+// product tilt
+const tilt=document.getElementById('tilt');
+tilt.addEventListener('mousemove',e=>{
+  const r=tilt.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+  tilt.style.transform=`perspective(900px) rotateY(${x*9}deg) rotateX(${-y*9}deg)`;
+});
+tilt.addEventListener('mouseleave',()=>tilt.style.transform='');
+</script>
+</body>
+</html>
