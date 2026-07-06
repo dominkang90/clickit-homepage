@@ -23,7 +23,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.75;overflow-x:hidden}
-img{max-width:100%;display:block}
+img{max-width:100%;height:auto;display:block}
 a{color:inherit;text-decoration:none}
 ::selection{background:var(--amber);color:#0a0d13}
 
@@ -224,7 +224,7 @@ video{width:100%;border-radius:24px;border:1px solid var(--line);margin-top:70px
 .polar:nth-child(1){transform:rotate(-1.6deg)}
 .polar:nth-child(2){transform:rotate(1.4deg)}
 .polar:hover{transform:rotate(0) translateY(-8px)}
-.polar img{border-radius:3px}
+.polar img{border-radius:3px;aspect-ratio:3/2;object-fit:cover;width:100%}
 .polar figcaption{padding:14px 6px 16px;font:500 13px var(--mono);color:#4a5262;letter-spacing:.02em}
 
 /* ---------- roadmap ---------- */
